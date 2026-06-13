@@ -1,0 +1,10 @@
+CREATE TABLE cartas (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT NOT NULL,
+    custo_mana INTEGER NOT NULL,
+    ataque INTEGER NOT NULL,
+    defesa INTEGER NOT NULL,
+    tipo VARCHAR(20) NOT NULL,
+    classe VARCHAR(20) NOT NULL
+);
