@@ -3,6 +3,7 @@ package com.villyrosa.hearthstone.service;
 import com.villyrosa.hearthstone.entity.Carta;
 import com.villyrosa.hearthstone.enums.ClasseCarta;
 import com.villyrosa.hearthstone.enums.TipoCarta;
+import com.villyrosa.hearthstone.exception.CartaNotFoundException;
 import com.villyrosa.hearthstone.repository.CartaRepository;
 import com.villyrosa.hearthstone.specification.CartaSpecification;
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -26,7 +27,8 @@ public class CartaService {
     }
 
     public Carta findById(Long id) {
-        return this.cartaRepository.findById(id).orElse(null);
+        return this.cartaRepository.findById(id)
+                .orElseThrow(() -> new CartaNotFoundException(id));
     }
 
     public Carta save(Carta carta) {
@@ -34,7 +36,17 @@ public class CartaService {
     }
 
     public Carta update(Carta carta) {
-        return this.cartaRepository.save(carta);
+        Carta cartaExistente = this.findById(carta.getId());
+
+        cartaExistente.setNome(carta.getNome());
+        cartaExistente.setDescricao(carta.getDescricao());
+        cartaExistente.setCustoMana(carta.getCustoMana());
+        cartaExistente.setAtaque(carta.getAtaque());
+        cartaExistente.setDefesa(carta.getDefesa());
+        cartaExistente.setTipo(carta.getTipo());
+        cartaExistente.setClasse(carta.getClasse());
+
+        return this.cartaRepository.save(cartaExistente);
     }
 
     public void deleteById(Long id) {
